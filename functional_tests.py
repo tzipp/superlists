@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 import unittest
 
 class NewVisitorTest(unittest.TestCase):
@@ -15,18 +16,33 @@ class NewVisitorTest(unittest.TestCase):
 
         # He notices the page title and header mention to-do lists.
         self.assertIn('To-Do', self.browser.title)
-        self.fail('Finish the test!')
+        header_text = self.browser.find_element_by_tag_name('h1').text
+        self.assertIn('To-Do', header_text)
 
-# He is invited to enter a to-do item straight away
+        # He is invited to enter a to-do item straight away
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        self.assertEqual(
+                inputbox.get_attribute('placeholder'),
+                'Enter a to-do item'
+        )
 
-# He types "Move new online UPS into the server room" into a text box (Rob is always concerned
-# with ABI's ability to withstand any adverse event affecting power to the business.
+        # He types "Move new online UPS into the server room" into a text box (Rob is always concerned
+        # with ABI's ability to withstand any adverse event affecting power to the business.
+        inputbox.send_keys('Move new online UPS into the server room')
 
-# When he hits enter, the page updates, and now the page lists
-# "1: Move new online UPS into the server room" as an item in a to-do list
+        # When he hits enter, the page updates, and now the page lists
+        # "1: Move new online UPS into the server room" as an item in a to-do list
+        inputbox.send_keys(Keys.ENTER)
+
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertTrue(
+                any(row.text == '1: Move new online UPS into the server room' for row in rows)
+        )
 
 # There is still a text box inviting him to add another item. He
 # enters "Setup the UPS, ensuring that minimal shutdowns occur while rearranging the power plugs."
+        self.fail('Finish the test!')
 
 # The page updates again, and now shows both items on his list.
 
