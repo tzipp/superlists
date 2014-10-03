@@ -6,8 +6,14 @@ class NewVisitorTest(unittest.TestCase):
     def setUp(self):
         self.browser = webdriver.Firefox()
         self.browser.implicitly_wait(3)
+
     def tearDown(self):
         self.browser.quit()
+
+    def check_for_row_in_list_table(self, row_text):
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn(row_text, [row.text for row in rows])
 
     def test_can_start_a_list_and_retrieve_it_later(self):
         # Rob heard about a new online to-do list app. He wants to see if it might be useful for the IT
@@ -34,10 +40,7 @@ class NewVisitorTest(unittest.TestCase):
         # "1: Move new online UPS into the server room" as an item in a to-do list
         inputbox.send_keys(Keys.ENTER)
 
-        table = self.browser.find_element_by_id('id_list_table')
-        rows = table.find_elements_by_tag_name('tr')
-
-        self.assertIn('1: Move new online UPS into the server room', [row.text for row in rows])
+        self.check_for_row_in_list_table('1: Move new online UPS into the server room')
 
 
 # There is still a text box inviting him to add another item. He
@@ -47,10 +50,8 @@ class NewVisitorTest(unittest.TestCase):
         inputbox.send_keys(Keys.ENTER)
 
 # The page updates again, and now shows both items on his list.
-        table = self.browser.find_element_by_id('id_list_table')
-        rows = table.find_elements_by_tag_name('tr')
-        self.assertIn('1: Move new online UPS into the server room', [row.text for row in rows])
-        self.assertIn('2: Setup the UPS', [row.text for row in rows])
+        self.check_for_row_in_list_table('1: Move new online UPS into the server room')
+        self.check_for_row_in_list_table('2: Setup the UPS')
 
 # Rob wonders whether the site will remember his list. Then he sees that the site has generated
 # a unique URL for him -- there is some explanatory text to that effect.
