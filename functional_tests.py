@@ -55,8 +55,10 @@ class NewVisitorTest(unittest.TestCase):
 
 # Rob wonders whether the site will remember his list. Then he sees that the site has generated
 # a unique URL for him -- there is some explanatory text to that effect.
+        self.fail('Finish the test!')
 
 # He visits that URL - his to-do list is still there.
+
 
 if __name__ == '__main__':
     unittest.main(warnings='ignore')
