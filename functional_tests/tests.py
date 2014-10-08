@@ -35,6 +35,8 @@ class NewVisitorTest(LiveServerTestCase):
         # He types "Move new online UPS into the server room" into a text box (Rob is always concerned
         # with ABI's ability to withstand any adverse event affecting power to the business.
         inputbox.send_keys('Move new online UPS into the server room')
+        inputbox.send_keys(Keys.ENTER)
+
         rob_list_url = self.browser.current_url
         self.assertRegex(rob_list_url, '/lists/.+')
         self.check_for_row_in_list_table("1: Move new online UPS into the server room")
@@ -42,9 +44,7 @@ class NewVisitorTest(LiveServerTestCase):
 
         # When he hits enter, the page updates, and now the page lists
         # "1: Move new online UPS into the server room" as an item in a to-do list
-        inputbox.send_keys(Keys.ENTER)
 
-        self.check_for_row_in_list_table('1: Move new online UPS into the server room')
 
 
 # There is still a text box inviting him to add another item. He
@@ -76,6 +76,11 @@ class NewVisitorTest(LiveServerTestCase):
         inputbox = self.browser.find_element_by_id('id_new_item')
         inputbox.send_keys('Write code')
         inputbox.send_keys(Keys.ENTER)
+
+# Peter gets his own unique URL
+        peter_list_url = self.browser.current_url
+        self.assertRegex(peter_list_url, '/lists/.+')
+        self.assertNotEqual(peter_list_url, rob_list_url)
 
 # Again, there is no trace of Rob's list.
         page_text = self.browser.find_element_by_tag_name('body').text
