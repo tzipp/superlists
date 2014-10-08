@@ -35,6 +35,10 @@ class NewVisitorTest(LiveServerTestCase):
         # He types "Move new online UPS into the server room" into a text box (Rob is always concerned
         # with ABI's ability to withstand any adverse event affecting power to the business.
         inputbox.send_keys('Move new online UPS into the server room')
+        rob_list_url = self.browser.current_url
+        self.assertRegex(rob_list_url, '/lists/.+')
+        self.check_for_row_in_list_table("1: Move new online UPS into the server room")
+
 
         # When he hits enter, the page updates, and now the page lists
         # "1: Move new online UPS into the server room" as an item in a to-do list
@@ -53,8 +57,32 @@ class NewVisitorTest(LiveServerTestCase):
         self.check_for_row_in_list_table('1: Move new online UPS into the server room')
         self.check_for_row_in_list_table('2: Setup the UPS')
 
-# Rob wonders whether the site will remember his list. Then he sees that the site has generated
-# a unique URL for him -- there is some explanatory text to that effect.
+# Now a new user, Peter, comes along to the site.
+
+## We use a new browser session to make sure that no information of
+## Rob's is coming through the cookies etc
+        self.browser.quit()
+        self.browser = webdriver.Firefox()
+
+# Peter visits the home page. There is no sign of Rob's list.
+        self.browser.get(self.live_server_url)
+        page_text = self.browser.find_element_by_tag_name('body').text
+        self.assertNotIn('Move new online UPS', page_text)
+        self.assertNotIn('Setup the UPS', page_text)
+
+
+# Peter starts a new list by entering a new item. He is less interesting
+# than Rob...
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox.send_keys('Write code')
+        inputbox.send_keys(Keys.ENTER)
+
+# Again, there is no trace of Rob's list.
+        page_text = self.browser.find_element_by_tag_name('body').text
+        self.assertNotIn('Move new online UPS', page_text)
+        self.assertNotIn('Setup the UPS', page_text)
+
+# Satisfied, they both go back to sleep
         self.fail('Finish the test!')
 
 # He visits that URL - his to-do list is still there.
