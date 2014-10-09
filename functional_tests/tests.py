@@ -19,17 +19,32 @@ class NewVisitorTest(LiveServerTestCase):
         # Rob heard about a new online to-do list app. He wants to see if it might be useful for the IT
         # department at ABI Research.
         self.browser.get(self.live_server_url)
+        self.browser.set_window_size(1024,768)
 
         # He notices the page title and header mention to-do lists.
         self.assertIn('To-Do', self.browser.title)
         header_text = self.browser.find_element_by_tag_name('h1').text
         self.assertIn('To-Do', header_text)
 
-        # He is invited to enter a to-do item straight away
+        # He notices the input box is nicely centered
         inputbox = self.browser.find_element_by_id('id_new_item')
+        self.assertAlmostEqual(
+            inputbox.location['x']+inputbox.size['width'] /2,
+                512,
+                delta=5
+        )
         self.assertEqual(
                 inputbox.get_attribute('placeholder'),
                 'Enter a to-do item'
+        )
+
+        # He starts a new list and sees the input is nicely centered there too
+        inputbox.send_keys('testing\n')
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        self.assertAlmostEqual(
+                inputbox.location['x'] + inputbox.size['width'] / 2,
+                512,
+                delta=5
         )
 
         # He types "Move new online UPS into the server room" into a text box (Rob is always concerned
