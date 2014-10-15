@@ -20,7 +20,7 @@ class NewVisitorTest(FunctionalTest):
         # He types "Move new online UPS into the server room" into a text box 
         # Rob is always concerned
         # with ABI's ability to withstand any adverse event affecting power to the business.
-        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox = self.get_item_input_box()
         inputbox.send_keys('Move new online UPS into the server room')
         inputbox.send_keys(Keys.ENTER)
 
@@ -31,10 +31,10 @@ class NewVisitorTest(FunctionalTest):
 
         # When he hits enter, the page updates, and now the page lists
         # "1: Move new online UPS into the server room" as an item in a to-do list
-        # There is still a text box inviting him to add another item. He    
-        # enters "Setup the UPS, ensuring that minimal shutdowns 
+        # There is still a text box inviting him to add another item. He
+        # enters "Setup the UPS, ensuring that minimal shutdowns
         # occur while rearranging the power plugs."
-        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox = self.get_item_input_box()
         inputbox.send_keys('Setup the UPS')
         inputbox.send_keys(Keys.ENTER)
 
@@ -58,7 +58,7 @@ class NewVisitorTest(FunctionalTest):
 
         # Peter starts a new list by entering a new item. He is less interesting
         # than Rob...
-        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox = self.get_item_input_box()
         inputbox.send_keys('Write code')
         inputbox.send_keys(Keys.ENTER)
 
@@ -75,6 +75,6 @@ class NewVisitorTest(FunctionalTest):
         # Satisfied, they both go back to sleep
         #        self.fail('Finish the test!')
 
-        # He visits that URL - his to-do list is still there.	
-    
+        # He visits that URL - his to-do list is still there.
+
 
