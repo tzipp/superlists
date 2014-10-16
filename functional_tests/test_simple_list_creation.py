@@ -58,7 +58,7 @@ class NewVisitorTest(FunctionalTest):
 
         # Peter starts a new list by entering a new item. He is less interesting
         # than Rob...
-        inputbox = self.get_item_by_input_box()
+        inputbox = self.get_item_input_box()
         inputbox.send_keys('Write code')
         inputbox.send_keys(Keys.ENTER)
 
