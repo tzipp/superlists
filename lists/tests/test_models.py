@@ -2,7 +2,7 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 from lists.models import Item, List
 
-class ListAndItemModelTest(TestCase):
+class ItemModelTest(TestCase):
 
     def test_saving_and_retrieving_item(self):
         list_ = List()
@@ -37,6 +37,24 @@ class ListAndItemModelTest(TestCase):
         with self.assertRaises(ValidationError):
             item.save()
             item.full_clean()
+
+    def test_duplicate_items_are_invalid(self):
+        list_ = List.objects.create()
+        Item.objects.create(list=list_, text='bla')
+        with self.assertRaises(ValidationError):
+            item = Item(list=list_, text='bla')
+            item.full_clean()
+            # item.save()
+
+    def text_CAN_save_same_item_to_different_lists(self):
+        list1 = List.objects.create()
+        list2 = List.objects.create()
+        Item.objects.create(list=list1, text='bla')
+        item = Item(list=list2, text='bla')
+        item.full_clean() # should not raise
+
+
+class ListModelTest(TestCase):
 
     def test_get_absolute_url(self):
         list_ = List.objects.create()
