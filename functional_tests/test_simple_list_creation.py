@@ -20,7 +20,7 @@ class NewVisitorTest(FunctionalTest):
         # He types "Move new online UPS into the server room" into a text box 
         # Rob is always concerned
         # with ABI's ability to withstand any adverse event affecting power to the business.
-        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox = self.get_item_input_box()
         inputbox.send_keys('Move new online UPS into the server room')
         inputbox.send_keys(Keys.ENTER)
 
@@ -34,7 +34,7 @@ class NewVisitorTest(FunctionalTest):
         # There is still a text box inviting him to add another item. He    
         # enters "Setup the UPS, ensuring that minimal shutdowns 
         # occur while rearranging the power plugs."
-        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox = self.get_item_input_box()
         inputbox.send_keys('Setup the UPS')
         inputbox.send_keys(Keys.ENTER)
 
@@ -58,7 +58,7 @@ class NewVisitorTest(FunctionalTest):
 
         # Peter starts a new list by entering a new item. He is less interesting
         # than Rob...
-        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox = self.get_item_by_input_box()
         inputbox.send_keys('Write code')
         inputbox.send_keys(Keys.ENTER)
 
